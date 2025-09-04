@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Digital Queue System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Admin Panel</h1>
+            <p class="tagline">Manage Queue & Serve Customers</p>
+        </header>
+
+        <!-- Queue Control Panel -->
+        <div class="card">
+            <h3>🎛️ Queue Control</h3>
+            <div style="text-align: center; margin: 20px 0;">
+                <button id="serve-next-btn" class="btn btn-success btn-large" onclick="serveNext()">
+                    <span class="btn-icon">👤</span>
+                    Serve Next Customer
+                </button>
+            </div>
+            
+            <div id="next-customer" class="next-customer" style="display: none;">
+                <h4>Next Customer to Serve:</h4>
+                <div class="customer-card">
+                    <div class="customer-info">
+                        <div><strong>Ticket #<span id="next-ticket-number">-</span></strong></div>
+                        <div>Name: <span id="next-customer-name">-</span></div>
+                        <div>Service: <span id="next-customer-service">-</span></div>
+                        <div>Priority: <span id="next-customer-priority">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Queue Statistics -->
+        <div class="card">
+            <h3>📊 Real-time Statistics</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value" id="admin-waiting-count">0</span>
+                    <span class="stat-label">Waiting</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="admin-served-count">0</span>
+                    <span class="stat-label">Served Today</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="staff-count">0</span>
+                    <span class="stat-label">Staff Priority</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="elderly-count">0</span>
+                    <span class="stat-label">Senior Citizens</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Queue -->
+        <div class="card">
+            <h3>📋 Current Queue</h3>
+            <div id="queue-list" class="queue-list">
+                <p>No customers in queue</p>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card">
+            <h3>📡 Live Activity Log</h3>
+            <div id="activity-log" class="activity-log">
+                <p>🔗 Connected to queue system...</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card">
+            <h3>⚡ Quick Actions</h3>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <button class="btn btn-outline" onclick="refreshQueue()">
+                    <span class="btn-icon">🔄</span>
+                    Refresh Queue
+                </button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                    <span class="btn-icon">👤</span>
+                    User Interface
+                </a>
+                <button class="btn btn-outline" onclick="exportData()">
+                    <span class="btn-icon">📊</span>
+                    Export Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- use server-served socket.io to match server version -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

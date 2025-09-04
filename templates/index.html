@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Queue System - Request Ticket</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎫 Digital Queue System</h1>
+            <p class="tagline">Fair and Resilient Queuing for Critical Services</p>
+        </header>
+
+        <!-- Queue Status Display -->
+        <div class="card" id="queue-status">
+            <h3>📊 Current Queue Status</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value" id="waiting-count">0</span>
+                    <span class="stat-label">Waiting</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="served-count">0</span>
+                    <span class="stat-label">Served</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="next-number">-</span>
+                    <span class="stat-label">Next</span>
+                </div>
+            </div>
+            <div id="priority-stats" class="priority-stats"></div>
+        </div>
+
+        <!-- Ticket Request Form -->
+        <div class="card" id="request-form">
+            <h3>📝 Request Your Ticket</h3>
+            <form id="ticketForm">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Service Category *</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select Service</option>
+                        <option value="railway">Railway Booking</option>
+                        <option value="airline">Airline Booking</option>
+                        <option value="exam">Exam Registration</option>
+                        <option value="government">Government Service</option>
+                        <option value="healthcare">Healthcare Service</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Priority Category *</label>
+                    <select id="priority" name="priority" required>
+                        <option value="regular">Regular User</option>
+                        <option value="elderly">Senior Citizen (60+)</option>
+                        <option value="disabled">Person with Disability</option>
+                        <option value="staff">Staff/Employee</option>
+                    </select>
+                    <small>Priority users get preferential position in queue</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🎫</span>
+                    Request Ticket
+                </button>
+            </form>
+        </div>
+
+        <!-- Ticket Display (Hidden initially) -->
+        <div class="card" id="ticket-display" style="display: none;">
+            <div class="success-icon">✅</div>
+            <h3>Ticket Generated Successfully!</h3>
+            
+            <div class="ticket-info">
+                <div class="ticket-number">
+                    <span class="label">Your Ticket Number</span>
+                    <span class="value" id="ticket-number">#0000</span>
+                    <span class="badge" id="priority-badge">REGULAR</span>
+                </div>
+                
+                <div class="ticket-details">
+                    <div class="detail-row">
+                        <span class="label">Name:</span>
+                        <span class="value" id="ticket-name">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Service:</span>
+                        <span class="value" id="ticket-service">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Position in Queue:</span>
+                        <span class="value" id="queue-position">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Status:</span>
+                        <span class="status-badge" id="ticket-status">WAITING</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Estimated Wait:</span>
+                        <span class="value" id="estimated-wait">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="requestAnother()">
+                    Request Another Ticket
+                </button>
+                <button class="btn btn-outline" onclick="refreshStatus()">
+                    <span class="btn-icon">🔄</span>
+                    Refresh Status
+                </button>
+            </div>
+        </div>
+
+        <!-- Live Updates -->
+        <div class="card">
+            <h3>📡 Live Updates</h3>
+            <div id="live-updates" class="live-updates">
+                <p>🔗 Connected to queue system...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- use server-served socket.io to match server version -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
